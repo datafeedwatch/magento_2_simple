@@ -11,9 +11,19 @@
 namespace Dfw\Connector\Controller\Adminhtml\System;
 
 use Dfw\Connector\Model\Api\User as ApiUser;
+use Exception;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 
+/**
+ * Class Refresh
+ * @package Dfw\Connector\Controller\Adminhtml\System
+ */
 class Refresh extends Button
 {
+    /**
+     * @return ResponseInterface|ResultInterface
+     */
     public function execute()
     {
         try {

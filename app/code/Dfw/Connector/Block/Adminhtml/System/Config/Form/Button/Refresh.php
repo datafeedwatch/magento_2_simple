@@ -17,7 +17,7 @@ namespace Dfw\Connector\Block\Adminhtml\System\Config\Form\Button;
 class Refresh extends BaseButton
 {
     /**
-     * @return \Magento\Framework\Phrase
+     * @return string
      */
     public function getButtonLabel()
     {

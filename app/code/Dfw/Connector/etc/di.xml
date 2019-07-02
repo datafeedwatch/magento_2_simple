@@ -14,4 +14,7 @@
     <type name="Magento\Catalog\Api\ProductRepositoryInterface">
         <plugin name="ParentIdsExtensionAttribute" type="Dfw\Connector\Plugin\ParentIds"/>
     </type>
+
+    <preference for="Dfw\Connector\Api\ConnectorInterface" type="Dfw\Connector\Model\Connector" />
+
 </config>

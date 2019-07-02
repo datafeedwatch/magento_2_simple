@@ -10,32 +10,39 @@
 
 namespace Dfw\Connector\Controller\Adminhtml\System;
 
+use Dfw\Connector\Helper\Data;
+use Dfw\Connector\Model\Api\User;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 
+/**
+ * Class Button
+ * @package Dfw\Connector\Controller\Adminhtml\System
+ */
 abstract class Button extends Action
 {
     const ADMIN_RESOURCE = 'Dfw_Connector::config';
 
     /**
-     * @var \Dfw\Connector\Helper\Data
+     * @var Data
      */
     public $dataHelper;
 
     /**
-     * @var \Dfw\Connector\Model\Api\User
+     * @var User
      */
     public $apiUser;
 
     /**
      * Button constructor.
-     * @param Action\Context $context
-     * @param \Dfw\Connector\Helper\Data $dataHelper
-     * @param \Dfw\Connector\Model\Api\User $apiUser
+     * @param Context $context
+     * @param Data $dataHelper
+     * @param User $apiUser
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Dfw\Connector\Helper\Data $dataHelper,
-        \Dfw\Connector\Model\Api\User $apiUser
+        Context $context,
+        Data $dataHelper,
+        User $apiUser
     ) {
         $this->dataHelper     = $dataHelper;
         $this->apiUser        = $apiUser;

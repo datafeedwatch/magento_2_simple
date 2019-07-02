@@ -1,18 +1,28 @@
 <?php
 /**
  * Created by Q-Solutions Studio
- * Date: 22.08.16
+ * Date: 01.07.19
  *
- * @category    DataFeedWatch
- * @package     DataFeedWatch_Connector
- * @author      Lukasz Owczarczuk <lukasz@qsolutionsstudio.com>
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 
 namespace Dfw\Connector\Helper;
 
-use DataFeedWatch\Connector\Model\System\Config\Source\Inheritance as InheritanceSource;
+use Dfw\Connector\Model\System\Config\Source\Inheritance as InheritanceSource;
+use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection;
+use Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory;
+use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Cache\Frontend\Pool;
+use Magento\Framework\App\Config\ReinitableConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 
+/**
+ * Class Data
+ * @package Dfw\Connector\Helper
+ */
 class Data extends AbstractHelper
 {
     const MY_DATA_FEED_WATCH_URL               = 'https://my.datafeedwatch.com/';
@@ -21,32 +31,41 @@ class Data extends AbstractHelper
     const IMAGE_URL_CUSTOM_INHERITANCE_XPATH   = 'datafeedwatch_connector/custom_inheritance/image_url';
     const LAST_CATALOGRULE_PRICE_ID_XPATH      = 'datafeedwatch_connector/custom_inheritance/last_catalogrule_price_id';
     const LAST_INHERITANCE_UPDATE_XPATH        = 'datafeedwatch_connector/custom_inheritance/last_inheritance_update';
-    
-    /** @var \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory */
-    private $collectionFactory;
-    
-    /** @var \Magento\Config\Model\ResourceModel\Config */
-    private $resourceConfig;
-    
-    /** @var \Magento\Framework\App\Config\ReinitableConfigInterface */
-    private $appConfig;
-    
-    /** @var \Magento\Framework\App\Cache\Frontend\Pool */
-    private $cacheFrontendPool;
-    
+
     /**
-     * @param \Magento\Framework\App\Helper\Context                                    $context
-     * @param \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $collectionFactory
-     * @param \Magento\Config\Model\ResourceModel\Config                               $resourceConfig
-     * @param \Magento\Framework\App\Config\ReinitableConfigInterface                  $appConfig
-     * @param \Magento\Framework\App\Cache\Frontend\Pool                               $cacheFrontendPool
+     * @var CollectionFactory
+     */
+    private $collectionFactory;
+
+    /**
+     * @var Config
+     */
+    private $resourceConfig;
+
+    /**
+     * @var ReinitableConfigInterface
+     */
+    private $appConfig;
+
+    /**
+     * @var Pool
+     */
+    private $cacheFrontendPool;
+
+    /**
+     * Data constructor.
+     * @param Context $context
+     * @param CollectionFactory $collectionFactory
+     * @param Config $resourceConfig
+     * @param ReinitableConfigInterface $appConfig
+     * @param Pool $cacheFrontendPool
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory $collectionFactory,
-        \Magento\Config\Model\ResourceModel\Config $resourceConfig,
-        \Magento\Framework\App\Config\ReinitableConfigInterface $appConfig,
-        \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
+        Context $context,
+        CollectionFactory $collectionFactory,
+        Config $resourceConfig,
+        ReinitableConfigInterface $appConfig,
+        Pool $cacheFrontendPool
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->resourceConfig    = $resourceConfig;
@@ -108,7 +127,7 @@ class Data extends AbstractHelper
         $this->resourceConfig->saveConfig(self::LAST_INHERITANCE_UPDATE_XPATH, $date, 'default', 0);
         $this->appConfig->reinit();
     }
-    
+
     /**
      * @return string
      */
@@ -217,7 +236,7 @@ class Data extends AbstractHelper
             'swatch_image'              => InheritanceSource::CHILD_OPTION_ID,
         ];
 
-        /** @var \Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection $catalogAttributes */
+        /** @var Collection $catalogAttributes */
         $catalogAttributes = $this->collectionFactory->create();
         foreach ($catalogAttributes as $attribute) {
             $attribute->setData('can_configure_inheritance', null);

@@ -1,11 +1,11 @@
 <?php
 /**
  * Created by Q-Solutions Studio
- * Date: 27.02.18
+ * Date: 01.07.19
  *
- * @category    DataFeedWatch
- * @package     DataFeedWatch_Connector
- * @author      Lukasz Owczarczuk <lukasz@qsolutionsstudio.com>
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 
 namespace Dfw\Connector\Block\Adminhtml\System\Config\Form\Button;

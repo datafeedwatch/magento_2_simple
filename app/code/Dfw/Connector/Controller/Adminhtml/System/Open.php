@@ -10,18 +10,21 @@
 
 namespace Dfw\Connector\Controller\Adminhtml\System;
 
+use Exception;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 
 /**
  * Class Open
- * @package Dfw\Connector\Controller\System
+ * @package Dfw\Connector\Controller\Adminhtml\System
  */
 class Open extends Button implements CsrfAwareActionInterface
 {
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|ResultInterface
      */
     public function execute()
     {
@@ -35,7 +38,7 @@ class Open extends Button implements CsrfAwareActionInterface
             $apiUser->createDfwUser();
 
             return $this->getResponse()->setRedirect($apiUser->getRegisterUrl());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
 
             return $this->getResponse()->setRedirect($this->_redirect->getRefererUrl());
@@ -43,7 +46,8 @@ class Open extends Button implements CsrfAwareActionInterface
     }
 
     /**
-     * @inheritDoc
+     * @param RequestInterface $request
+     * @return InvalidRequestException|null
      */
     public function createCsrfValidationException(RequestInterface $request): ? InvalidRequestException
     {
@@ -51,7 +55,8 @@ class Open extends Button implements CsrfAwareActionInterface
     }
 
     /**
-     * @inheritDoc
+     * @param RequestInterface $request
+     * @return bool|null
      */
     public function validateForCsrf(RequestInterface $request): ? bool
     {

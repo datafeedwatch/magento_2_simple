@@ -10,8 +10,30 @@
 
 namespace Dfw\Connector\Model\Api;
 
+use Dfw\Connector\Helper\Data;
+use Exception;
+use Magento\Authorization\Model\Role;
+use Magento\Authorization\Model\RoleFactory;
+use Magento\Authorization\Model\RulesFactory;
 use Magento\Authorization\Model\UserContextInterface;
+use Magento\Backend\App\ConfigInterface;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\HTTP\Client\Curl;
+use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+use Magento\Framework\Validator\DataObjectFactory;
+use Magento\Integration\Model\AdminTokenService;
+use Magento\Integration\Model\Oauth\Token;
+use Magento\Integration\Model\Oauth\Token\RequestThrottler;
+use Magento\Integration\Model\ResourceModel\Oauth\Token\RequestLog;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\User\Model\User as MagentoUser;
+use Magento\User\Model\UserValidationRules;
 
 /**
  * Class User
@@ -33,81 +55,81 @@ class User extends MagentoUser
     const RULE_PERMISSION        = 'allow';
 
     /**
-     * @var \Dfw\Connector\Helper\Data
+     * @var Data
      */
     public $dataHelper;
 
     /**
-     * @var \Magento\Authorization\Model\RulesFactory
+     * @var RulesFactory
      */
     public $rulesFactory;
 
     /**
-     * @var
+     * @var string
      */
     private $decodedApiKey;
 
     /**
-     * @var \Magento\Integration\Model\ResourceModel\Oauth\Token\RequestLog
+     * @var RequestLog
      */
     private $oauthToken;
 
     /**
-     * @var \Magento\Integration\Model\AdminTokenService
+     * @var AdminTokenService
      */
     private $adminTokenService;
 
     /**
-     * @var \Magento\Integration\Model\Oauth\Token
+     * @var Token
      */
     private $tokenModel;
 
     /**
-     * @var \Magento\Framework\HTTP\Client\Curl
+     * @var Curl
      */
     private $curl;
 
     /**
      * User constructor.
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param \Magento\User\Helper\Data $userData
-     * @param \Magento\Backend\App\ConfigInterface $config
-     * @param \Magento\Authorization\Model\RoleFactory $roleFactory
-     * @param \Magento\Framework\Validator\DataObjectFactory $validatorObjectFactory
-     * @param \Magento\Authorization\Model\RulesFactory $rulesFactory
-     * @param \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
-     * @param \Magento\Framework\Encryption\EncryptorInterface $encryptor
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\User\Model\UserValidationRules $validationRules
-     * @param \Dfw\Connector\Helper\Data $dataHelper
-     * @param \Magento\Integration\Model\ResourceModel\Oauth\Token\RequestLog $oauthToken
-     * @param \Magento\Integration\Model\Oauth\Token $tokenModel
-     * @param \Magento\Integration\Model\AdminTokenService $adminTokenService
-     * @param \Magento\Framework\HTTP\Client\Curl $curl
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
+     * @param ConfigInterface $config
+     * @param RoleFactory $roleFactory
+     * @param DataObjectFactory $validatorObjectFactory
+     * @param RulesFactory $rulesFactory
+     * @param TransportBuilder $transportBuilder
+     * @param EncryptorInterface $encryptor
+     * @param StoreManagerInterface $storeManager
+     * @param UserValidationRules $validationRules
+     * @param Data $dataHelper
+     * @param RequestLog $oauthToken
+     * @param Token $tokenModel
+     * @param AdminTokenService $adminTokenService
+     * @param Curl $curl
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         \Magento\User\Helper\Data $userData,
-        \Magento\Backend\App\ConfigInterface $config,
-        \Magento\Authorization\Model\RoleFactory $roleFactory,
-        \Magento\Framework\Validator\DataObjectFactory $validatorObjectFactory,
-        \Magento\Authorization\Model\RulesFactory $rulesFactory,
-        \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-        \Magento\Framework\Encryption\EncryptorInterface $encryptor,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\User\Model\UserValidationRules $validationRules,
-        \Dfw\Connector\Helper\Data $dataHelper,
-        \Magento\Integration\Model\ResourceModel\Oauth\Token\RequestLog $oauthToken,
-        \Magento\Integration\Model\Oauth\Token $tokenModel,
-        \Magento\Integration\Model\AdminTokenService $adminTokenService,
-        \Magento\Framework\HTTP\Client\Curl $curl,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ConfigInterface $config,
+        RoleFactory $roleFactory,
+        DataObjectFactory $validatorObjectFactory,
+        RulesFactory $rulesFactory,
+        TransportBuilder $transportBuilder,
+        EncryptorInterface $encryptor,
+        StoreManagerInterface $storeManager,
+        UserValidationRules $validationRules,
+        Data $dataHelper,
+        RequestLog $oauthToken,
+        Token $tokenModel,
+        AdminTokenService $adminTokenService,
+        Curl $curl,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
         array $data = []
     ) {
 
@@ -135,8 +157,8 @@ class User extends MagentoUser
     }
 
     /**
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Exception
+     * @throws NoSuchEntityException
+     * @throws Exception
      */
     public function createDfwUser()
     {
@@ -167,8 +189,8 @@ class User extends MagentoUser
     }
 
     /**
-     * @return \Magento\Authorization\Model\Role
-     * @throws \Exception
+     * @return Role
+     * @throws Exception
      */
     public function createDfwUserRole()
     {
@@ -188,9 +210,6 @@ class User extends MagentoUser
         return $role;
     }
 
-    /**
-     *
-     */
     public function generateApiKey()
     {
         $key = substr(
@@ -201,9 +220,6 @@ class User extends MagentoUser
         $this->decodedApiKey = sha1(time() . $key);
     }
 
-    /**
-     *
-     */
     public function addUserData()
     {
         $data = [
@@ -219,7 +235,7 @@ class User extends MagentoUser
     }
 
     /**
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function sendNewApiKeyToDfw()
     {
@@ -233,7 +249,7 @@ class User extends MagentoUser
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getRegisterUrl()
     {
@@ -246,21 +262,19 @@ class User extends MagentoUser
             . $this->getDecodedApiKey() . '&version=2';
     }
 
-    /**
-     *
-     */
     public function resetOauth()
     {
         $this->oauthToken->resetFailuresCount(
             self::USER_NAME,
-            \Magento\Integration\Model\Oauth\Token\RequestThrottler::USER_TYPE_ADMIN
+            RequestThrottler::USER_TYPE_ADMIN
         );
     }
 
     /**
      * @param null $token
      * @return bool|string
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
+     * @throws Exception
      */
     public function revokeDfwUserAccessTokens($token = null)
     {
@@ -293,7 +307,7 @@ class User extends MagentoUser
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteUserAndRole()
     {
