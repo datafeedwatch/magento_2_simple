@@ -169,6 +169,7 @@ class User extends MagentoUser
         $this->save();
 
         $resource = [
+            'Magento_Catalog::catalog',
             'Magento_Catalog::config_catalog',
             'Magento_Backend::stores_attributes',
             'Magento_Catalog::attributes_attributes',
