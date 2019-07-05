@@ -104,7 +104,11 @@ class ParentIds
         $connection = $this->resourceConnection->getConnection();
         $tableName = $this->resourceConnection->getTableName(self::RELATIONS_TABLE);
 
-        $query = sprintf("SELECT parent_id FROM %s WHERE child_id = %s", $tableName, $productId);
+        $query = $this->resourceConnection
+            ->getConnection()
+            ->select()
+            ->from($tableName, 'parent_id')
+            ->where(sprintf('child_id = %s', $productId));
 
         return $connection->fetchCol($query);
     }

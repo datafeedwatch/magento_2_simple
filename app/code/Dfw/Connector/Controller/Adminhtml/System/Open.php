@@ -10,6 +10,7 @@
 
 namespace Dfw\Connector\Controller\Adminhtml\System;
 
+use Dfw\Connector\Helper\Data;
 use Exception;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
@@ -28,12 +29,11 @@ class Open extends Button
         try {
             $apiUser = $this->apiUser;
 
-            if (!$apiUser->isObjectNew()) {
-                return $this->getResponse()->setRedirect($this->dataHelper->getDataFeedWatchUrl());
+            if (!$apiUser->loadDfwUser()->isEmpty()) {
+                return $this->getResponse()->setRedirect(Data::MY_DATA_FEED_WATCH_URL);
             }
 
             $apiUser->createDfwUser();
-
             return $this->getResponse()->setRedirect($apiUser->getRegisterUrl());
         } catch (Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());

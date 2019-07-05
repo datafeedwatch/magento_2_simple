@@ -12,9 +12,10 @@ namespace Dfw\Connector\Model\Api;
 
 use Dfw\Connector\Helper\Data;
 use Exception;
-use Magento\Authorization\Model\Role;
 use Magento\Authorization\Model\RoleFactory;
 use Magento\Authorization\Model\RulesFactory;
+use Magento\Authorization\Model\ResourceModel\Role;
+use Magento\Authorization\Model\ResourceModel\Role\CollectionFactory;
 use Magento\Authorization\Model\UserContextInterface;
 use Magento\Backend\App\ConfigInterface;
 use Magento\Framework\Data\Collection\AbstractDb;
@@ -34,6 +35,8 @@ use Magento\Integration\Model\ResourceModel\Oauth\Token\RequestLog;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\User\Model\User as MagentoUser;
 use Magento\User\Model\UserValidationRules;
+use Magento\User\Model\ResourceModel\User as UserResourceModel;
+use Magento\User\Model\ResourceModel\User\CollectionFactory as UserCollectionFactory;
 
 /**
  * Class User
@@ -90,6 +93,32 @@ class User extends MagentoUser
     private $curl;
 
     /**
+     * @var CollectionFactory
+     */
+    protected $roleCollectionFactory;
+
+    /**
+     * @var Role
+     */
+    protected $roleResourceModel;
+
+    /**
+     * @var UserCollectionFactory
+     */
+    protected $userCollectionFactory;
+
+    /**
+     * @var UserResourceModel
+     */
+    protected $userResourceModel;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+
+    /**
      * User constructor.
      * @param Context $context
      * @param Registry $registry
@@ -107,6 +136,10 @@ class User extends MagentoUser
      * @param Token $tokenModel
      * @param AdminTokenService $adminTokenService
      * @param Curl $curl
+     * @param CollectionFactory $roleCollectionFactory
+     * @param Role $roleResourceModel
+     * @param UserResourceModel $userResourceModel
+     * @param UserCollectionFactory $userCollectionFactory
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
@@ -128,6 +161,10 @@ class User extends MagentoUser
         Token $tokenModel,
         AdminTokenService $adminTokenService,
         Curl $curl,
+        CollectionFactory $roleCollectionFactory,
+        Role $roleResourceModel,
+        UserResourceModel $userResourceModel,
+        UserCollectionFactory $userCollectionFactory,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -139,6 +176,11 @@ class User extends MagentoUser
         $this->oauthToken           = $oauthToken;
         $this->adminTokenService    = $adminTokenService;
         $this->tokenModel           = $tokenModel;
+        $this->roleCollectionFactory = $roleCollectionFactory;
+        $this->roleResourceModel = $roleResourceModel;
+        $this->userCollectionFactory = $userCollectionFactory;
+        $this->userResourceModel = $userResourceModel;
+        $this->storeManager = $storeManager;
         parent::__construct(
             $context,
             $registry,
@@ -162,11 +204,14 @@ class User extends MagentoUser
      */
     public function createDfwUser()
     {
+        /** @var \Magento\Authorization\Model\Role $role */
         $role = $this->createDfwUserRole();
+
         $this->generateApiKey();
         $this->addUserData();
         $this->setRoleId($role->getId());
-        $this->save();
+
+        $this->userResourceModel->save($this);
 
         $resource = [
             'Magento_Catalog::catalog',
@@ -190,13 +235,16 @@ class User extends MagentoUser
     }
 
     /**
-     * @return Role
+     * @return \Magento\Authorization\Model\Role
      * @throws Exception
      */
     public function createDfwUserRole()
     {
-        $role = $this->_roleFactory->create();
-        $role->load(self::ROLE_NAME, 'role_name');
+        /** @var \Magento\Authorization\Model\Role $role */
+        $role = $this->roleCollectionFactory
+            ->create()
+            ->addFieldToFilter('role_name', self::ROLE_NAME)
+            ->getFirstItem();
 
         $data = [
             'name'      => self::ROLE_NAME,
@@ -206,7 +254,7 @@ class User extends MagentoUser
         ];
 
         $role->addData($data);
-        $role->save();
+        $this->roleResourceModel->save($role);
 
         return $role;
     }
@@ -256,10 +304,11 @@ class User extends MagentoUser
     {
         $registerUrl = sprintf(
             '%splatforms/magento/sessions/finalize',
-            $this->dataHelper->getDataFeedWatchUrl()
+            Data::MY_DATA_FEED_WATCH_URL
         );
 
-        return $registerUrl . '?shop=' . $this->_storeManager->getStore()->getBaseUrl() . '&token='
+
+        return $registerUrl . '?shop=' . $this->storeManager->getStore()->getBaseUrl() . '&token='
             . $this->getDecodedApiKey() . '&version=2';
     }
 
@@ -312,18 +361,27 @@ class User extends MagentoUser
      */
     public function deleteUserAndRole()
     {
-        $role = $this->_roleFactory->create();
-        $role->load(self::ROLE_NAME, 'role_name');
-        $role->delete();
-        $this->loadDfwUser();
-        $this->delete();
+        /** @var \Magento\Authorization\Model\Role $role */
+        $role = $this->roleCollectionFactory
+            ->create()
+            ->addFieldToFilter('role_name', self::ROLE_NAME)
+            ->getFirstItem();
+
+        $this->roleResourceModel->delete($role);
+        $this->roleResourceModel->delete($this->loadDfwUser());
     }
 
     /**
-     * @return User
+     * @return MagentoUser
      */
     public function loadDfwUser()
     {
-        return $this->load(self::USER_EMAIL, 'email');
+        /** @var MagentoUser $dfwUser */
+        $dfwUser = $this->userCollectionFactory
+            ->create()
+            ->addFieldToFilter('email', self::USER_EMAIL)
+            ->getFirstItem();
+
+        return $dfwUser;
     }
 }

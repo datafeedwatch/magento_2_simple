@@ -10,6 +10,7 @@
 
 namespace Dfw\Connector\Block\Adminhtml\System\Config\Form\Button;
 
+use Magento\Backend\Block\Widget\Button;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Backend\Block\Template\Context;
@@ -49,7 +50,7 @@ abstract class BaseButton extends Field implements ButtonInterface
     public function _getElementHtml(AbstractElement $element)
     {
         return !$element instanceof AbstractElement ? parent::_getElementHtml($element): $this->getLayout()
-                    ->createBlock(\Magento\Backend\Block\Widget\Button::class)
+                    ->createBlock(Button::class)
                     ->setType('button')
                     ->setClass('scalable')
                     ->setLabel($this->getButtonLabel())
