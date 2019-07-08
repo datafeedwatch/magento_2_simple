@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+  /**
+ * Created by Q-Solutions Studio
+ * Date: 01.07.19
+ *
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dfw" translate="label" sortOrder="100">
+            <label>DFW</label>
+        </tab>
+        <section id="dfw_connector" translate="label" type="text" sortOrder="100" showInDefault="1"
+                 showInWebsite="0" showInStore="0">
+            <label>General</label>
+            <tab>dfw</tab>
+            <resource>Dfw_Connector::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Configuration</label>
+                <field id="connector_open" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Go To My DataFeedWatch</label>
+                    <frontend_model>Dfw\Connector\Block\Adminhtml\System\Config\Form\Button\Open</frontend_model>
+                </field>
+                <field id="connector_refresh" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Refresh DataFeedWatch Access</label>
+                    <comment>Refresh DataFeedWatch access: SOAP user and role</comment>
+                    <frontend_model>Dfw\Connector\Block\Adminhtml\System\Config\Form\Button\Refresh</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

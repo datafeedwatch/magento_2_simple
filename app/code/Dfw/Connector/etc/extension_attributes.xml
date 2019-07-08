@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  /**
+ * Created by Q-Solutions Studio
+ * Date: 01.07.19
+ *
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Catalog\Api\Data\ProductInterface">
+        <attribute code="parent_ids" type="array" />
+    </extension_attributes>
+</config>
