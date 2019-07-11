@@ -309,7 +309,7 @@ class User extends MagentoUser
 
 
         return $registerUrl . '?shop=' . $this->storeManager->getStore()->getBaseUrl() . '&token='
-            . $this->getDecodedApiKey() . '&version=2';
+            . $this->getDecodedApiKey() . '&version=' . $this->dataHelper->getConfig(Data::VERSION_PARAMETER_XML_PATH);
     }
 
     public function resetOauth()

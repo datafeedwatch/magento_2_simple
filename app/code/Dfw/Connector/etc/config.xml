@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  /**
+ * Created by Q-Solutions Studio
+ * Date: 10.07.19
+ *
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <dfw_connector>
+            <general>
+                <version>2api</version>
+            </general>
+        </dfw_connector>
+    </default>
+</config>

@@ -18,5 +18,16 @@ use Magento\Framework\App\Helper\AbstractHelper;
  */
 class Data extends AbstractHelper
 {
-    const MY_DATA_FEED_WATCH_URL  = 'https://my.datafeedwatch.com/';
+    const MY_DATA_FEED_WATCH_URL = 'https://my.datafeedwatch.com/';
+
+    const VERSION_PARAMETER_XML_PATH = "dfw_connector/general/version";
+
+    /**
+     * @param string $path
+     * @return mixed
+     */
+    public function getConfig($path)
+    {
+        return $this->scopeConfig->getValue($path);
+    }
 }
