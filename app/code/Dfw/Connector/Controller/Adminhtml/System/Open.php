@@ -30,7 +30,10 @@ class Open extends Button
             $apiUser = $this->apiUser;
 
             if (!$apiUser->loadDfwUser()->isEmpty()) {
-                return $this->getResponse()->setRedirect(Data::MY_DATA_FEED_WATCH_URL);
+                $apiUrl = ($this->dataHelper->getConfig(DATA::TEST_API_STATUS_XML_PATH)) ?
+                    $this->dataHelper->getConfig(DATA::TEST_API_URL_XML_PATH) : Data::MY_DATA_FEED_WATCH_URL;
+
+                return $this->getResponse()->setRedirect($apiUrl);
             }
 
             $apiUser->createDfwUser();
