@@ -28,15 +28,26 @@
                     <label>Go To My DataFeedWatch</label>
                     <frontend_model>Dfw\Connector\Block\Adminhtml\System\Config\Form\Button\Open</frontend_model>
                 </field>
-                <field id="connector_refresh" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                <field id="connector_refresh" translate="label comment" type="text" sortOrder="20" showInDefault="1"
                        showInWebsite="0" showInStore="0">
                     <label>Refresh DataFeedWatch Access</label>
                     <comment>Refresh DataFeedWatch access: SOAP user and role</comment>
                     <frontend_model>Dfw\Connector\Block\Adminhtml\System\Config\Form\Button\Refresh</frontend_model>
                 </field>
-                <field id="version" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="version" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Version parameter value</label>
                     <validate>required-entry validate-entry</validate>
+                </field>
+                <field id="test_mode" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Test Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="test_api_url" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Test API Url</label>
+                    <validate>validate-url</validate>
+                    <depends>
+                        <field id="test_mode">1</field>
+                    </depends>
                 </field>
             </group>
         </section>
