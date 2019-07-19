@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+  /**
+ * Created by Q-Solutions Studio
+ * Date: 19.07.19
+ *
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ */
+-->
+<integrations>
+    <integration name="dfwIntegration">
+        <resources>
+            <resource name="Magento_Catalog::catalog" />
+            <resource name="Magento_Catalog::config_catalog" />
+            <resource name="Magento_Backend::stores_attributes" />
+            <resource name="Magento_Catalog::attributes_attributes" />
+            <resource name="Magento_Catalog::update_attributes" />
+            <resource name="Magento_Catalog::sets" />
+            <resource name="Magento_Catalog::catalog_inventory" />
+            <resource name="Magento_Catalog::products" />
+            <resource name="Magento_Catalog::categories" />
+            <resource name="Magento_CatalogInventory::cataloginventory" />
+            <resource name="Magento_CatalogRule::promo_catalog" />
+            <resource name="Magento_Sales::sales" />
+        </resources>
+    </integration>
+</integrations>

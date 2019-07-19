@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+  /**
+ * Created by Q-Solutions Studio
+ * Date: 19.07.19
+ *
+ * @category    Dfw
+ * @package     Dfw_Connector
+ * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ */
+-->
+<integrations>
+    <integration name="dfwIntegration">
+        <email>magento@datafeedwatch.com</email>
+        <endpoint_url>https://my.datafeedwatch.com/</endpoint_url>
+        <identity_link_url>https://my.datafeedwatch.com/platforms/magento/sessions/finalize</identity_link_url>
+    </integration>
+</integrations>
