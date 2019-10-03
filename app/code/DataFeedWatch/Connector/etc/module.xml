@@ -4,14 +4,14 @@
  * Created by Q-Solutions Studio
  * Date: 01.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Dfw_Connector" setup_version="1.0.0">
+    <module name="DataFeedWatch_Connector" setup_version="1.0.0">
         <sequence>
             <module name="Magento_Catalog"/>
             <module name="Magento_Integration"/>

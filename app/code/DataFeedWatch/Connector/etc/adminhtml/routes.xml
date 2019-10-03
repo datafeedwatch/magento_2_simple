@@ -4,8 +4,8 @@
  * Created by Q-Solutions Studio
  * Date: 01.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 -->
@@ -13,7 +13,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
         <route id="dfw" frontName="dfw">
-            <module name="Dfw_Connector"/>
+            <module name="DataFeedWatch_Connector"/>
         </route>
     </router>
 </config>

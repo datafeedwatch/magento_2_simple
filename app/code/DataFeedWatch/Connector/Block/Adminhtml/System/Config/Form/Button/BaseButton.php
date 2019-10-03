@@ -3,22 +3,22 @@
  * Created by Q-Solutions Studio
  * Date: 01.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 
-namespace Dfw\Connector\Block\Adminhtml\System\Config\Form\Button;
+namespace DataFeedWatch\Connector\Block\Adminhtml\System\Config\Form\Button;
 
 use Magento\Backend\Block\Widget\Button;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Backend\Block\Template\Context;
-use Dfw\Connector\Helper\Data as DataHelper;
+use DataFeedWatch\Connector\Helper\Data as DataHelper;
 
 /**
  * Class BaseButton
- * @package Dfw\Connector\Block\Adminhtml\System\Config\Form\Button
+ * @package DataFeedWatch\Connector\Block\Adminhtml\System\Config\Form\Button
  */
 abstract class BaseButton extends Field implements ButtonInterface
 {

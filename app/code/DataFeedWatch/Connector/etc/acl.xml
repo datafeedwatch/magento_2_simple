@@ -4,8 +4,8 @@
  * Created by Q-Solutions Studio
  * Date: 02.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 -->
@@ -17,7 +17,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Dfw_Connector::config" title="Dfw_Connector" sortOrder="100"/>
+                            <resource id="DataFeedWatch_Connector::config" title="DataFeedWatch_Connector" sortOrder="100"/>
                         </resource>
                     </resource>
                 </resource>

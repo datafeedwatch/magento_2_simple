@@ -3,18 +3,18 @@
  * Created by Q-Solutions Studio
  * Date: 01.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 
-namespace Dfw\Connector\Helper;
+namespace DataFeedWatch\Connector\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 
 /**
  * Class Data
- * @package Dfw\Connector\Helper
+ * @package DataFeedWatch\Connector\Helper
  */
 class Data extends AbstractHelper
 {

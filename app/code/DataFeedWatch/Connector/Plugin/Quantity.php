@@ -1,14 +1,14 @@
 <?php
 /**
  * Created by Q-Solutions Studio
- * Date: 01.07.19
+ * Date: 30.09.2019
  *
- * @category    Dfw
- * @package     Dfw_Connector
- * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
+ * @author      Wojciech M. Wnuk <wojtek@qsolutionsstudio.com>
  */
 
-namespace Dfw\Connector\Plugin;
+namespace DataFeedWatch\Connector\Plugin;
 
 use Magento\Catalog\Api\Data\ProductExtensionFactory;
 use Magento\Catalog\Model\ProductRepository;
@@ -17,13 +17,10 @@ use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Api\SearchResults;
 use Magento\Framework\App\ResourceConnection;
 
-/**
- * Class ParentIds
- * @package Dfw\Connector\Plugin
- */
-class ParentIds
+class Quantity
 {
-    const RELATIONS_TABLE = "catalog_product_relation";
+    const STOCK_TABLE = "inventory_source_item";
+    const LEGACY_STOCK_TABLE = "cataloginventory_stock_item";
 
     /**
      * @var ProductExtensionFactory
@@ -87,8 +84,8 @@ class ParentIds
         if($product->getTypeId() == Type::TYPE_SIMPLE) {
             $extensionAttributes = $product->getExtensionAttributes();
             $extensionAttributes = $extensionAttributes ?? $this->extensionFactory->create();
-            $extensionAttributes->setParentIds(
-                $this->getParentIds($product->getId())
+            $extensionAttributes->setQuantity(
+                $this->getQuantity($product)
             );
             $product->setExtensionAttributes($extensionAttributes);
         }
@@ -96,20 +93,25 @@ class ParentIds
     }
 
     /**
-     * @param $productId
-     * @return array
+     * @param Product $productSku
+     * @return float
      */
-    protected function getParentIds($productId)
+    protected function getQuantity(Product $product)
     {
         $connection = $this->resourceConnection->getConnection();
-        $tableName = $this->resourceConnection->getTableName(self::RELATIONS_TABLE);
+        $tableName = $this->resourceConnection->getTableName(self::STOCK_TABLE);
 
-        $query = $this->resourceConnection
-            ->getConnection()
-            ->select()
-            ->from($tableName, 'parent_id')
-            ->where(sprintf('child_id = %s', $productId));
+        if ($connection->isTableExists($tableName)) {
+            $query = sprintf("SELECT SUM(`quantity`) FROM `%s` WHERE `sku` = '%s' AND `status` = 1", $tableName, $product->getSku());
+        } else {
+            $tableName = $this->resourceConnection->getTableName(self::LEGACY_STOCK_TABLE);
 
-        return $connection->fetchCol($query);
+            $query = sprintf(
+                "SELECT SUM(`qty`) FROM `%s` WHERE `product_id` = '%s' AND `is_in_stock` = 1%s",
+                $tableName, $product->getId(), $product->getWebsiteId() ? sprintf(" AND `website_id` = %s", $product->getWebsiteId()) : ''
+            );
+        }
+
+        return $connection->fetchOne($query);
     }
 }

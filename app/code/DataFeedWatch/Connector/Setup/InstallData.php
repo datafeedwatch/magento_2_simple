@@ -3,12 +3,12 @@
  * Created by Q-Solutions Studio
  * Date: 19.07.19
  *
- * @category    Dfw
- * @package     Dfw_Connector
+ * @category    DataFeedWatch
+ * @package     DataFeedWatch_Connector
  * @author      Maciej Buchert <maciej@qsolutionsstudio.com>
  */
 
-namespace Dfw\Connector\Setup;
+namespace DataFeedWatch\Connector\Setup;
 
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -17,7 +17,7 @@ use Magento\Integration\Model\ConfigBasedIntegrationManager;
 
 /**
  * Class InstallData
- * @package Dfw\Connector\Setup
+ * @package DataFeedWatch\Connector\Setup
  */
 class InstallData implements InstallDataInterface
 {
