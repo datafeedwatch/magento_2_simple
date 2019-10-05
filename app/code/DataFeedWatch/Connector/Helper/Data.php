@@ -19,6 +19,9 @@ use Magento\Framework\App\Helper\AbstractHelper;
 class Data extends AbstractHelper
 {
     const MY_DATA_FEED_WATCH_URL = 'https://my.datafeedwatch.com/';
+    const VERSION_PARAMETER_XML_PATH = "dfw_connector/general/version";
+    const TEST_API_STATUS_XML_PATH = 'dfw_connector/general/test_mode';
+    const TEST_API_URL_XML_PATH = 'dfw_connector/general/test_api_url';
 
     /**
      * @param string $path
