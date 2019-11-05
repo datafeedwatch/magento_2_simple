@@ -14,5 +14,7 @@
     <type name="Magento\Catalog\Api\ProductRepositoryInterface">
         <plugin name="DataFeedWatch_Connector::parent_ids_as_extension_attribute" type="DataFeedWatch\Connector\Plugin\ParentIds"/>
         <plugin name="DataFeedWatch_Connector::quantity_as_extension_attribute" type="DataFeedWatch\Connector\Plugin\Quantity"/>
+        <plugin name="DataFeedWatch_Connector::product_url_as_extension_attribute" type="DataFeedWatch\Connector\Plugin\ProductUrl"/>
+        <plugin name="DataFeedWatch_Connector::product_images_as_extension_attribute" type="DataFeedWatch\Connector\Plugin\ProductImages"/>
     </type>
 </config>

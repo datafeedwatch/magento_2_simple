@@ -13,5 +13,8 @@
     <extension_attributes for="Magento\Catalog\Api\Data\ProductInterface">
         <attribute code="parent_ids" type="array" />
         <attribute code="quantity" type="float" />
+        <attribute code="product_url" type="string" />
+        <attribute code="additional_urls" type="array" />
+        <attribute code="product_images" type="array" />
     </extension_attributes>
 </config>
