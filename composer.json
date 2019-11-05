@@ -1,5 +1,6 @@
 {
     "name": "dfw/module-connector",
+    "license": "OSL-3.0",
     "description": "N/A",
     "require": {
         "php": "7.*",
@@ -7,10 +8,6 @@
     },
     "type": "magento2-module",
     "version": "1.0.0",
-    "license": [
-        "OSL-3.0",
-        "AFL-3.0"
-    ],
     "autoload": {
         "files": [
             "registration.php"
