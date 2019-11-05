@@ -2,6 +2,7 @@
     "name": "dfw/module-connector",
     "description": "N/A",
     "require": {
+        "php": "7.*",
         "magento/framework": "100.0.*"
     },
     "type": "magento2-module",
